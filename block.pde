@@ -1,5 +1,5 @@
 //情報表現入門提出課題
-import ddf.minim.*;
+//import ddf.minim.*;
 
 ArrayList<Bullet> bullets;
 ArrayList<Block> blocks;
