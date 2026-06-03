@@ -1,30 +1,37 @@
 //情報表現入門提出課題
 //import ddf.minim.*;
+import processing.video.*;
 
 ArrayList<Bullet> bullets;
 ArrayList<Block> blocks;
 Block goalBlock;
+
+Movie myMovie;
 
 //AudioPlayer music;
 Player player;
 //Minim minim;
 
 int frameCountSinceSpawn = 0;
-int scene = 0;  // 0: タイトル, 1: ゲーム
+int scene = 0;  // 0: タイトル, 1: ゲーム, 2:エンディング
 
 void setup() {
   //minim = new Minim(this);
   //music = minim.loadFile("konngyo-reverse.wav");
   //size(600, 800);
   fullScreen();
+  myMovie = new Movie( this, "video.mov");
+  myMovie.loop();
 }
 
 void draw() {
   background(0);
   if (scene == 0) {
     drawTitle();
-  } else {
+  } else if (scene == 1) {
     drawGame();
+  } else {
+    endGame();
   }
 }
 /*
@@ -37,6 +44,7 @@ void stop(){
  */
 
 void drawTitle() {
+
   fill(255);
   textAlign(CENTER, CENTER);
   textSize(64);
@@ -59,36 +67,37 @@ void drawGame() {
   fill(0, 0, 255);
   noStroke();
   rect(goalBlock.x, goalBlock.y, goalBlock.w, goalBlock.h);
-
+  
   // 弾更新・描画
-  for (int i = bullets.size() - 1; i >= 0; i--) {
-    Bullet bullet = bullets.get(i);
-    bullet.update();
-
-    boolean bulletRemoved = false;
-    // 耐久ブロックとの衝突判定
-    for (int j = blocks.size() - 1; j >= 0; j--) {
-      Block block = blocks.get(j);
-      if (block.contains(bullet.x, bullet.y)) {
-        bullets.remove(i);
-        bulletRemoved = true;
-        block.hit();
-        if (block.isBroken()) {
-          blocks.remove(j);
-        }
-        break;
-      }
-    }
-    if (bulletRemoved) {
-      continue;
-    }
-
-    bullet.display();
-    if (bullet.isOffscreen()) {
-      bullets.remove(i);
-    }
-  }
-
+   for (int i = bullets.size() - 1; i >= 0; i--) {
+   Bullet bullet = bullets.get(i);
+   bullet.update();
+   
+   boolean bulletRemoved = false;
+   // 耐久ブロックとの衝突判定
+   for (int j = blocks.size() - 1; j >= 0; j--) {
+   Block block = blocks.get(j);
+   if (block.contains(bullet.x, bullet.y)) {
+   bullets.remove(i);
+   bulletRemoved = true;
+   block.hit();
+   if (block.isBroken()) {
+   blocks.remove(j);
+   }
+   break;
+   }
+   }
+   if (bulletRemoved) {
+   continue;
+   }
+   
+   bullet.display();
+   if (bullet.isOffscreen()) {
+   bullets.remove(i);
+   }
+   }
+   
+   
   player.update();
   player.display();
 
@@ -99,6 +108,7 @@ void drawGame() {
     textAlign(CENTER, CENTER);
     textSize(48);
     text("GAME CLEAR", width / 2, height / 2);
+    scene = 2;  // エンディングシーンへ
     return;
   }
 
@@ -114,6 +124,15 @@ void drawGame() {
       break;
     }
   }
+}
+
+void endGame() {
+  noLoop();
+  image(myMovie, 0, 0, width, height);
+  fill(0, 255, 0);
+  textAlign(CENTER, CENTER);
+  textSize(48);
+  text("GAME CLEAR", width / 2, height / 2);
 }
 
 void keyPressed() {
@@ -291,4 +310,9 @@ class Block {
   boolean isBroken() {
     return durability == 0;
   }
+
+  void explosion() {
+    //ゲームをクリアしたときの爆発エフェクト
+  }
 }
+
