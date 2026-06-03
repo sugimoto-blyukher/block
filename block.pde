@@ -15,7 +15,8 @@ int scene = 0;  // 0: タイトル, 1: ゲーム
 void setup() {
   //minim = new Minim(this);
   //music = minim.loadFile("konngyo-reverse.wav");
-  size(600, 800);
+  //size(600, 800);
+  fullScreen();
 }
 
 void draw() {
@@ -39,7 +40,7 @@ void drawTitle() {
   fill(255);
   textAlign(CENTER, CENTER);
   textSize(64);
-  text("DANMAKU GAME", width / 2, height / 2 - 40);
+  text("BLOCK KUZUSI GAME", width / 2, height / 2 - 40);
   textSize(24);
   text("Press ENTER to Start", width / 2, height / 2 + 40);
 }
@@ -129,7 +130,7 @@ void keyPressed() {
         player.y - blockSize / 2,
         blockSize,
         blockSize,
-        3));
+        5));
     } else if (keyCode == ESC) {
       scene = 0;
       initGame();
@@ -143,7 +144,7 @@ void initGame() {
   blocks = new ArrayList<Block>();
   player = new Player(width / 2, height - 60, 20, 5);
   frameCountSinceSpawn = 0;
-  float goalSize = 30;
+  float goalSize = 120;
   goalBlock = new Block(
     width / 2 - goalSize / 2,
     height / 2 - 100 - goalSize / 2,
@@ -154,7 +155,7 @@ void initGame() {
 
 void spawnBullets() {
   frameCountSinceSpawn++;
-  if (frameCountSinceSpawn % 60 == 0) {
+  if (frameCountSinceSpawn % 240 == 0) {
     int numBullets = 30;
     for (int i = 0; i < numBullets; i++) {
       float angle = TWO_PI * i / numBullets;
