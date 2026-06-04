@@ -20,12 +20,12 @@ void setup() {
   //music = minim.loadFile("konngyo-reverse.wav");
   //size(600, 800);
   fullScreen();
-  myMovie = new Movie( this, "video.mp4" );
-  myMovie.play();
+  myMovie = new Movie( this, "video.mp4");
+  myMovie.loop();
 }
 
 void draw() {
-  background(255, 255, 255);
+  background(0);
   if (scene == 0) {
     drawTitle();
   } else if (scene == 1) {
@@ -67,37 +67,37 @@ void drawGame() {
   fill(0, 0, 255);
   noStroke();
   rect(goalBlock.x, goalBlock.y, goalBlock.w, goalBlock.h);
-
+  
   // 弾更新・描画
-  for (int i = bullets.size() - 1; i >= 0; i--) {
-    Bullet bullet = bullets.get(i);
-    bullet.update();
-
-    boolean bulletRemoved = false;
-    // 耐久ブロックとの衝突判定
-    for (int j = blocks.size() - 1; j >= 0; j--) {
-      Block block = blocks.get(j);
-      if (block.contains(bullet.x, bullet.y)) {
-        bullets.remove(i);
-        bulletRemoved = true;
-        block.hit();
-        if (block.isBroken()) {
-          blocks.remove(j);
-        }
-        break;
-      }
-    }
-    if (bulletRemoved) {
-      continue;
-    }
-
-    bullet.display();
-    if (bullet.isOffscreen()) {
-      bullets.remove(i);
-    }
-  }
-
-
+   for (int i = bullets.size() - 1; i >= 0; i--) {
+   Bullet bullet = bullets.get(i);
+   bullet.update();
+   
+   boolean bulletRemoved = false;
+   // 耐久ブロックとの衝突判定
+   for (int j = blocks.size() - 1; j >= 0; j--) {
+   Block block = blocks.get(j);
+   if (block.contains(bullet.x, bullet.y)) {
+   bullets.remove(i);
+   bulletRemoved = true;
+   block.hit();
+   if (block.isBroken()) {
+   blocks.remove(j);
+   }
+   break;
+   }
+   }
+   if (bulletRemoved) {
+   continue;
+   }
+   
+   bullet.display();
+   if (bullet.isOffscreen()) {
+   bullets.remove(i);
+   }
+   }
+   
+   
   player.update();
   player.display();
 
@@ -315,4 +315,3 @@ class Block {
     //ゲームをクリアしたときの爆発エフェクト
   }
 }
-
