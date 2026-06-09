@@ -20,7 +20,8 @@ void setup() {
   //music = minim.loadFile("konngyo-reverse.wav");
   //size(600, 800);
   fullScreen();
-  myMovie = new Movie(this, "video.mp4");
+  myMovie = new Movie( this, "video.mp4" );
+  myMovie.loop();
 }
 
 void draw() {
@@ -43,8 +44,8 @@ void stop(){
  */
 
 void drawTitle() {
-
   fill(255);
+  myMovie.play();
   textAlign(CENTER, CENTER);
   textSize(64);
   text("BLOCK KUZUSI GAME", width / 2, height / 2 - 40);
@@ -66,46 +67,47 @@ void drawGame() {
   fill(0, 0, 255);
   noStroke();
   rect(goalBlock.x, goalBlock.y, goalBlock.w, goalBlock.h);
-
-  /*
+  
   // 弾更新・描画
-  for (int i = bullets.size() - 1; i >= 0; i--) {
-    Bullet bullet = bullets.get(i);
-    bullet.update();
-
-    boolean bulletRemoved = false;
-    // 耐久ブロックとの衝突判定
-    for (int j = blocks.size() - 1; j >= 0; j--) {
-      Block block = blocks.get(j);
-      if (block.contains(bullet.x, bullet.y)) {
-        bullets.remove(i);
-        bulletRemoved = true;
-        block.hit();
-        if (block.isBroken()) {
-          blocks.remove(j);
-        }
-        break;
-      }
-    }
-    if (bulletRemoved) {
-      continue;
-    }
-
-    bullet.display();
-    if (bullet.isOffscreen()) {
-      bullets.remove(i);
-    }
-  }
-  */
-
-
+   for (int i = bullets.size() - 1; i >= 0; i--) {
+   Bullet bullet = bullets.get(i);
+   bullet.update();
+   
+   boolean bulletRemoved = false;
+   // 耐久ブロックとの衝突判定
+   for (int j = blocks.size() - 1; j >= 0; j--) {
+   Block block = blocks.get(j);
+   if (block.contains(bullet.x, bullet.y)) {
+   bullets.remove(i);
+   bulletRemoved = true;
+   block.hit();
+   if (block.isBroken()) {
+   blocks.remove(j);
+   }
+   break;
+   }
+   }
+   if (bulletRemoved) {
+   continue;
+   }
+   
+   bullet.display();
+   if (bullet.isOffscreen()) {
+   bullets.remove(i);
+   }
+   }
+   
+   
   player.update();
   player.display();
 
   // ゴール判定
   if (goalBlock.contains(player.x, player.y)) {
-    myMovie.jump(0);
-    myMovie.play();
+    noLoop();
+    fill(0, 255, 0);
+    textAlign(CENTER, CENTER);
+    textSize(48);
+    text("GAME CLEAR", width / 2, height / 2);
     scene = 2;  // エンディングシーンへ
     return;
   }
@@ -125,15 +127,12 @@ void drawGame() {
 }
 
 void endGame() {
+  noLoop();
+  background(255,255,255);
   image(myMovie, 0, 0, width, height);
-  fill(0, 255, 0);
   textAlign(CENTER, CENTER);
   textSize(48);
   text("GAME CLEAR", width / 2, height / 2);
-}
-
-void movieEvent(Movie movie) {
-  movie.read();
 }
 
 void keyPressed() {
@@ -316,4 +315,3 @@ class Block {
     //ゲームをクリアしたときの爆発エフェクト
   }
 }
-
