@@ -20,12 +20,11 @@ void setup() {
   //music = minim.loadFile("konngyo-reverse.wav");
   //size(600, 800);
   fullScreen();
-  myMovie = new Movie( this, "video.mp4" );
-  myMovie.play();
+  myMovie = new Movie(this, "video.mp4");
 }
 
 void draw() {
-  background(255, 255, 255);
+  background(0);
   if (scene == 0) {
     drawTitle();
   } else if (scene == 1) {
@@ -68,6 +67,7 @@ void drawGame() {
   noStroke();
   rect(goalBlock.x, goalBlock.y, goalBlock.w, goalBlock.h);
 
+  /*
   // 弾更新・描画
   for (int i = bullets.size() - 1; i >= 0; i--) {
     Bullet bullet = bullets.get(i);
@@ -96,6 +96,7 @@ void drawGame() {
       bullets.remove(i);
     }
   }
+  */
 
 
   player.update();
@@ -103,11 +104,8 @@ void drawGame() {
 
   // ゴール判定
   if (goalBlock.contains(player.x, player.y)) {
-    noLoop();
-    fill(0, 255, 0);
-    textAlign(CENTER, CENTER);
-    textSize(48);
-    text("GAME CLEAR", width / 2, height / 2);
+    myMovie.jump(0);
+    myMovie.play();
     scene = 2;  // エンディングシーンへ
     return;
   }
@@ -127,12 +125,15 @@ void drawGame() {
 }
 
 void endGame() {
-  noLoop();
   image(myMovie, 0, 0, width, height);
   fill(0, 255, 0);
   textAlign(CENTER, CENTER);
   textSize(48);
   text("GAME CLEAR", width / 2, height / 2);
+}
+
+void movieEvent(Movie movie) {
+  movie.read();
 }
 
 void keyPressed() {
