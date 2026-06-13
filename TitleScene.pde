@@ -5,6 +5,8 @@ void drawTitle() {
   text("BLOCK KUZUSI GAME", width / 2, height / 2 - 40);
   textSize(24);
   text("Press ENTER to Start", width / 2, height / 2 + 40);
+  textSize(18);
+  text("Arrow Keys: Move   SPACE: Shoot", width / 2, height / 2 + 80);
 }
 
 void handleTitleKeyPressed() {

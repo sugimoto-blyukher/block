@@ -3,12 +3,14 @@ class Player {
   float y;
   float size;
   float speed;
+  PImage sprite;
 
-  Player(float x, float y, float size, float speed) {
+  Player(float x, float y, float size, float speed, PImage sprite) {
     this.x = x;
     this.y = y;
     this.size = size;
     this.speed = speed;
+    this.sprite = sprite;
   }
 
   void update() {
@@ -24,13 +26,14 @@ class Player {
       }
     }
 
+    // プレイヤーの円全体が画面内に収まる位置へ補正する。
     x = constrain(x, size / 2, width - size / 2);
     y = constrain(y, size / 2, height - size / 2);
   }
 
   void display() {
-    fill(0, 200, 255);
-    noStroke();
-    ellipse(x, y, size, size);
+    imageMode(CENTER);
+    image(sprite, x, y, size, size);
+    imageMode(CORNER);
   }
 }

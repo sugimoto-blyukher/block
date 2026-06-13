@@ -18,5 +18,6 @@ void drawEnding() {
 }
 
 void movieEvent(Movie movie) {
+  // 新しい動画フレームが届くたびに表示用データを読み込む。
   movie.read();
 }

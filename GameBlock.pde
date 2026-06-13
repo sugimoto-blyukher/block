@@ -4,13 +4,22 @@ class Block {
   float w;
   float h;
   int durability;
+  boolean solidForPlayer;
 
-  Block(float x, float y, float w, float h, int durability) {
+  Block(
+    float x,
+    float y,
+    float w,
+    float h,
+    int durability,
+    boolean solidForPlayer
+  ) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
     this.durability = durability;
+    this.solidForPlayer = solidForPlayer;
   }
 
   void display() {
